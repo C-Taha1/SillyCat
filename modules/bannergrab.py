@@ -3,6 +3,8 @@ import time
 import socket 
 import os
 
+REPLY_SIZE = 4096 # for bigger banner handling
+
 def clear():
     os.system("clear")
 
@@ -15,19 +17,39 @@ def typewritter(word: str , delay: float) -> None:
 
 def grab( ip: str , port: int , timeout: float) -> None:
 
-    REPLY_SIZE = 1024
     sock = socket.socket(socket.AF_INET , socket.SOCK_STREAM)
     sock.settimeout(timeout)
+    GET_REQUEST = f"GET / HTTP/1.1\r\nHost: {ip}\r\nConnection: close\r\n\r\n".encode()
+
+
+    try:
+        SERVICE = socket.getservbyport(port)
+
+    except Exception as exp:
+        SERVICE = "unknown"
 
     try:
         CONN_ATTEMPT = sock.connect_ex((ip , port))
 
+
         if CONN_ATTEMPT == 0:
+
             typewritter(f"\n\033[1;32m[x] Connection Established with {ip}:{port}\033[1;0m\n" , 0.05)
         
-            data = sock.recv(REPLY_SIZE).decode(errors='ignore')
+            if SERVICE == "http":
+                sock.send(GET_REQUEST)
+                data = sock.recv(REPLY_SIZE).decode(errors='ignore')
+                print(f"[ {ip} : {port} ]\t said: \n\n{data}\n")
 
-            print(f"[ {ip}:{port} ] said:\n{data}")
+            elif SERVICE == "ssh" or SERVICE == "unknown":
+
+                sock.send("Hello Server".encode()) # to nullify server connecting and not responding
+                data = sock.recv(REPLY_SIZE).decode(errors='ignore')
+                print(f"[ {ip} : {port} ]\tsaid:\n\n{data}\n")
+
+
+        else:
+            print("[closed] the port is closed or network unreachable??\n")
 
 
     except Exception as exp:
@@ -59,7 +81,7 @@ def main():
     art()
     
     host = str(input("[x] host  ip : "))
-    port = int(input("[x] port number : "))
+    port = int(input("[x] port number ( < 0 < 65535 ) : "))
     timeout = float(input("[x] set a timeout : "))
 
     grab(host , port , timeout)

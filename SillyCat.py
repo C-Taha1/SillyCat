@@ -82,13 +82,14 @@ def help_menu():
     typewritter("Available Modules:\n" , 0.05)
 
     modules = list_modules()
-
+    
+    print("\n")
 
     for file in modules:
         print(f"\t{file}")
 
 
-    print("\tclear to clear the screen\n")
+    print("\t\nclear to clear the screen\n")
     print("\n[Note] Please Type 'run' and and the progam will ask you choose the filename ( sorry im lazy )\n")    
 
 
