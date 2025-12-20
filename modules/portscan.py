@@ -5,7 +5,7 @@ def clear():
     os.system("clear")
 
 
-def scan( ip: str , port: int , timeout: int):
+def scan( ip: str , port: int , timeout: float):
     
     sock = socket.socket(socket.AF_INET , socket.SOCK_STREAM)
     sock.settimeout(timeout)
