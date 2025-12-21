@@ -13,6 +13,7 @@ def typewritter(string: str , delay: float) -> None:
 		time.sleep(delay)
 		sys.stdout.flush()
 
+
 def art():
 	art = r""" 
 
@@ -31,6 +32,7 @@ def art():
 CODES = [ 200 , 500 ]
 
 def brute(url: str , word: str , delay: int) -> None:
+
 	try:
 		time.sleep(delay)
 
@@ -61,12 +63,12 @@ def main():
 
 	if wordlist == "":
 		print("No wordlist provided , using the default wordlist...")
-		words = openList("small.txt")
+		words = openList("wordlists/small.txt")
 
 	else:
 		words = openList(wordlist)
 
-	typewritter("BruteForcing has Started..." , 0.009)
+	typewritter("\nBruteForcing has Started...\n" , 0.009)
 
 	for word in words:
 		brute(base_url , word , delay)
