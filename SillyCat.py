@@ -63,8 +63,11 @@ def printFiles() -> None:
 
     for (count , file) in enumerate(files):
         print(f"\tmodule {count + 1} : {file}")
-
-
+        
+        if not file:
+            print("0 Modules Found")
+            
+            return "NO MODULES FOUND"
 
 
 def runFile(filename:str) -> None:
@@ -74,7 +77,7 @@ def runFile(filename:str) -> None:
         if filename.endswith(".py"):
             os.system(f"{build_tools[0]} {directory}/{filename}")
         else:
-            print("cant run {file} [ details : intrepeter/compiler not found ]")
+            print(f"cant run {file} [ details : intrepeter/compiler not found ]")
 
     except Exception as exp:
         print(f"error running the file [ details : {exp} ]")    
