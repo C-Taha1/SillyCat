@@ -12,7 +12,7 @@ def clear():
     os.system("cls" if os.name == "nt" else "clear")
 
 
-def typewritter(word: str , delay: int) -> None:
+def typewritter(word: str , delay: float) -> None:
     for char in word:
         sys.stdout.write(char)
         sys.stdout.flush()
@@ -38,7 +38,7 @@ def art():
 
 """
 
-    typewritter(art , 0.003)
+    typewritter(art , 0.02)
 
 
 
@@ -53,21 +53,21 @@ def Listdirectory():
         return None
 
 
-
-def printFiles() -> None:
+def printFiles():
     files = Listdirectory()
 
-    typewritter("[x] Fecthing Modules...\n" , 0.09)
+    typewritter("[x] Fetching Modules...\n", 0.09)
     time.sleep(1)
-    typewritter("[x] All modules loaded...\n" , 0.09)
+    typewritter("[x] All modules loaded...\n", 0.09)
 
-    for (count , file) in enumerate(files):
+    if not files:
+        print("[x] 0 Modules Found")
+        return
+
+    for count, file in enumerate(files):
         print(f"\tmodule {count + 1} : {file}")
-        
-        if not file:
-            print("0 Modules Found")
             
-            return "NO MODULES FOUND"
+
 
 
 def runFile(filename:str) -> None:
@@ -77,7 +77,7 @@ def runFile(filename:str) -> None:
         if filename.endswith(".py"):
             os.system(f"{build_tools[0]} {directory}/{filename}")
         else:
-            print(f"cant run {file} [ details : intrepeter/compiler not found ]")
+            print(f"cant run {filename} [ details : intrepeter/compiler not found ]")
 
     except Exception as exp:
         print(f"error running the file [ details : {exp} ]")    
