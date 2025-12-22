@@ -1,126 +1,130 @@
-import os
-import sys
+import os , sys
 import time
 
+# global vars 
+
+universal_path = "modules"
+build_tools = ["python3"]
+
+# interface starts here
+
+def clear():
+    os.system("cls" if os.name == "nt" else "clear")
 
 
-# colors 
-
-green = "\033[1;32m"
-red = "\033[1;31m"
-reset = "\033[1;0m"
-
-
-def typewritter(word: str , delay) -> None:
+def typewritter(word: str , delay: int) -> None:
     for char in word:
         sys.stdout.write(char)
-        time.sleep(delay)
         sys.stdout.flush()
+        time.sleep(delay)
 
 
-def Ascii_Art():
+def art():
     art = r"""
 
-							 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣠⣤⣶⣶⣶⣶⣶⣶⣶⣦⣀⠀⠀⠀⠀⢀⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀
-							⠀⠀⠀⠀⠀⠀⠀⢠⢤⣠⣶⣿⣿⡿⠿⠛⠛⠛⠛⠉⠛⠛⠛⠛⠿⣷⡦⠞⣩⣶⣸⡆⠀⠀⠀⠀⠀⠀⠀
-							⠀⠀⠀⠀⠀⠀⣠⣾⡤⣌⠙⠻⣅⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⠔⠋⢀⣾⣿⣿⠃⣇⠀⠀⠀⠀⠀⠀⠀
-							⠀⠀⠀⠀⣠⣾⣿⡟⢇⢻⣧⠄⠀⠈⢓⡢⠴⠒⠒⠒⠒⡲⠚⠁⠀⠐⣪⣿⣿⡿⡄⣿⣷⡄⠀⠀⠀⠀⠀
-							⠀⠀⠀⣠⣿⣿⠟⠁⠸⡼⣿⡂⠀⠀⠈⠁⠀⠀⠀⠀⠀⠁⠀⠀⠀⠀⠉⠹⣿⣧⢳⡏⠹⣷⡄⠀⠀⠀⠀
-							⠀⠀⣰⣿⡿⠃⠀⠀⠀⢧⠑⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠻⠇⡸⠀⠀⠘⢿⣦⣄⠀⠀
-							⠀⢰⣿⣿⠃⠀⠀⠀⠀⡼⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⡠⠀⠀⠀⠀⠀⠀⠰⡇⠀⠀⠀⠈⣿⣿⣆⠀
-							⠀⣿⣿⡇⠀⠀⠀⠀⢰⠇⠀⢺⡇⣄⠀⠀⠀⠀⣤⣶⣀⣿⠃⠀⠀⠀⠀⠀⠀⠀⣇⠀⠀⠀⠀⠸⣿⣿⡀
-							⢸⣿⣿⠀⠀⠀⠀⠀⢽⠀⢀⡈⠉⢁⣀⣀⠀⠀⠀⠉⣉⠁⠀⠀⠀⣀⠀⠀⠀⠀⡇⠀⠀⠀⠀⠀⣿⣿⡇
-							⢸⣿⡟⠀⠀⠀⠠⠀⠈⢧⡀⠀⠀⠀⠹⠁⠀⠀⠀⠀⠀⠀⠠⢀⠀⠀⠀⠀⠀⢼⠁⠀⠀⠀⠀⠀⢹⣿⡇
-							⢸⣿⣿⠀⠀⠀⠀⠀⠠⠀⠙⢦⣀⠠⠊⠉⠂⠄⠀⠀⠀⠈⠀⠀⠀⣀⣤⣤⡾⠘⡆⠀⠀⠀⠀⠀⣾⣿⡇
-							⠘⣿⣿⡀⠀⠀⠀⠀⠀⠀⠀⢠⠜⠳⣤⡀⠀⠀⣀⣤⡤⣶⣾⣿⣿⣿⠟⠁⠀⠀⡸⢦⣄⠀⠀⢀⣿⣿⠇
-							⠀⢿⣿⣧⠀⠀⠀⠀⠀⣠⣤⠞⠀⠀⠀⠙⠁⠙⠉⠀⠀⠸⣛⡿⠉⠀⠀⠀⢀⡜⠀⠀⠈⠙⠢⣼⣿⡿⠀
-							⠀⠈⣿⣿⣆⠀⠀⢰⠋⠡⡇⠀⡀⣀⣤⢢⣤⣤⣀⠀⠀⣾⠟⠀⠀⠀⠀⢀⠎⠀⠀⠀⠀⠀⣰⣿⣿⠁⠀
-							⠀⠀⠈⢿⣿⣧⣀⡇⠀⡖⠁⢠⣿⣿⢣⠛⣿⣿⣿⣷⠞⠁⠀⠀⠈⠫⡉⠁⠀⠀⠀⠀⢀⣼⣿⠿⠃⠀⠀
-							⠀⠀⠀⠈⠻⣿⣿⣇⡀⡇⠀⢸⣿⡟⣾⣿⣿⣿⣿⠋⠀⠀⠀⢀⡠⠊⠁⠀⠀⠀⢀⣠⣿⠏⠀⠀⠀⠀⠀
-							⠀⠀⠀⠀⠀⠈⠻⣿⣿⣦⣀⢸⣿⢻⠛⣿⣿⡿⠁⠀⠀⣀⠔⠉⠀⠀⠀⠀⣀⣴⡿⠟⠁⠀⠀⠀⠀⠀⠀
-							⠀⠀⠀⠀⠀⠀⠀⠈⠙⠿⣿⣿⣿⣼⣿⣿⣟⠀⠀⡠⠊⠀⣀⣀⣠⣴⣶⠿⠟⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀
-							⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠛⠿⣿⣿⣿⣿⣶⣶⣷⣶⣶⡿⠿⠛⠛⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-							⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠉⠛⠛⠛⠛⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-							          
+            /\___/\
+            )     (
+           =\     /=
+             )   (
+            /     \
+            )     (
+           /       \
+           \       /
+            \__ __/
+               ))
+              //
+             ((
+              \) 
+
+"""
+
+    typewritter(art , 0.003)
 
 
-	    """       
 
-    colored_art = f"{green}{art}{reset}"
+# functionalty starts here
 
-    typewritter(colored_art , 0.002)
-
-
-# functionality starts from here
-
-
-def list_modules():
-    modules = "modules"
-    
-    return os.listdir(modules)
-
-
-def run_command(command: str):
+def Listdirectory():
     try:
-        listed_files = list_modules()
-        found = False
-
-        for file in listed_files:
-            if file == command:
-                os.system(f"python3 modules/{file}")
-                found = True
-                break  # stop after running
-
-        if not found:
-            print(f"{red}uh i dont see {command} in the modules directory{reset}\n")
+        return os.listdir(universal_path)
 
     except Exception as exp:
-        print(f"\n{red}[oops] check this : {exp}{reset}")
+        print(f"error opening the main directory [ details : {exp}] ")
+        return None
 
 
-def help_menu():
-    typewritter("\nAvailable Modules:\n" , 0.05)
 
-    modules = list_modules()
-    
-    print("\n")
+def printFiles() -> None:
+    files = Listdirectory()
 
-    for file in modules:
-        print(f"\t{file}")
+    typewritter("[x] Fecthing Modules...\n" , 0.09)
+    time.sleep(1)
+    typewritter("[x] All modules loaded...\n" , 0.09)
 
-
-    print("\nclear to clear the screen\n")
-    print("\n[Note] Please Type 'run' and and the progam will ask you choose the filename ( sorry im lazy )\n")    
+    for (count , file) in enumerate(files):
+        print(f"\tmodule {count + 1} : {file}")
 
 
-def InputLoop():
-    user_input = input("\n[0x0e]: ")    
 
-    return user_input
+
+def runFile(filename:str) -> None:
+    directory = universal_path # memo footprint short ( a bit )
+
+    try:
+        if filename.endswith(".py"):
+            os.system(f"{build_tools[0]} {directory}/{filename}")
+        else:
+            print("cant run {file} [ details : intrepeter/compiler not found ]")
+
+    except Exception as exp:
+        print(f"error running the file [ details : {exp} ]")    
+
+
+
+
+def helpMenu():
+    typewritter(f"[x] Commands:\n" , 0.09)
+
+    print("\tlist -- print full modules list")
+    print("\trun -- run a module")
+    print("\tclear -- clear the screen") 
+    print("\texit -- exit SillyCat")
+
+
+
+def DataLoop():
+    data = input("[silly] ")
+
+    return data 
+
+
 
 def main():
-    Ascii_Art()
 
-    while True:
-        data = InputLoop().lower()
+    clear()
+    art()
+
+    run_time  = True
+
+    while run_time:
+        data = DataLoop().lower()
 
         if data == "exit":
-            typewritter("\nGoodbye -- Sillycat\n" , 0.05)
-            break
+            print("have a nice day\n")
+            exit()
 
-        elif data == "help": 
-            help_menu()    
+        elif data == "help":
+            helpMenu()
+
+        elif data == "list":
+            printFiles()
 
         elif data == "run":
-            filename = str(input("File To load: "))
-            run_command(filename)
-            continue
+            filename = str(input('module to load? ( with extension ) : '))
+            runFile(filename)
 
         elif data == "clear":
-            os.system("clear")    
+            clear()   
 
-        else:
-            print(f"\n{red}Unknown Command : {data}{reset}\t( seriously? )\n")   
-
-if __name__ == "__main__":
-    main()                       
+if __name__ == '__main__':
+    main()             
