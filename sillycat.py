@@ -1,4 +1,5 @@
 import os , sys
+import subprocess
 
 # GLOBAL VARS
 TOOLS: list = os.listdir("scripts")
@@ -72,9 +73,9 @@ def choose_and_run():
         choosen_file = TOOLS[choice]
 
         if choosen_file.endswith(".py"):
-            os.system(f"{RUNNERS[0]} scripts/{choosen_file}")
+           subprocess.run([RUNNERS[0] , f"scripts/{choosen_file}") # Prevent shell code execution
         
-        else: print(f"[Error] :: Cant Find File '{choosen_file}'")
+        else: print(f"[Error] :: Unsupported File Type")
 
     
     except Exception as exp:
