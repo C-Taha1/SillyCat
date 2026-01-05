@@ -62,6 +62,27 @@ def help_menu() -> None:
 
 
 
+# The 'load' Command Logic      
+def choose_and_run():
+    
+    try:
+    
+        choice = int(input("[file index] :: "))
+
+        choosen_file = TOOLS[choice]
+
+        if choosen_file.endswith(".py"):
+            os.system(f"{RUNNERS[0]} scripts/{choosen_file}")
+        
+        else: print(f"[Error] :: Cant Find File '{choosen_file}'")
+
+    
+    except Exception as exp:
+        print(f"[Error] :: {exp}")
+
+
+
+
 # Main CLI
 def cmd_line():
     
@@ -89,25 +110,6 @@ def cmd_line():
 
         elif cmd == "load":
             choose_and_run()
-
-
-# The 'load' Command Logic   ( NOTE : Sorry i put it as the last , im still a noob at neovim and idk how to cut and past , thanks)      
-def choose_and_run():
-    
-    try:
-    
-        choice = int(input("[file index] :: "))
-
-        choosen_file = TOOLS[choice]
-
-        if choosen_file.endswith(".py"):
-            os.system(f"{RUNNERS[0]} scripts/{choosen_file}")
-        
-        else: print(f"[Error] :: Cant Find File '{choosen_file}'")
-
-    
-    except Exception as exp:
-        print(f"[Error] :: {exp}")
 
 
 
